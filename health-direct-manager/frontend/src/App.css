@@ -50,11 +50,35 @@ body {
 .header {
   position: sticky;
   top: 0;
-  z-index: 500;
+  z-index: 20;
 }
 
 .content-area {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+.calendar-area{
+  padding: 1.5rem;
+  padding-top: 0.5rem;
+}
+
+.calendar-header{
+    margin-bottom: 1rem;
+
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #333;
+
+  margin-bottom: 0px;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
 }

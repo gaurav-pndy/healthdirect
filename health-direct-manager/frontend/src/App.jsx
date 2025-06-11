@@ -1,9 +1,15 @@
-import { useContext } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import { AuthProvider, AuthContext } from './context/AuthContext';
-import ManagerSignIn from './pages/ManagerSignIn';
-import Dashboard from './pages/Dashboard';
-import './App.css';
+import { useContext } from "react";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+} from "react-router-dom";
+import { AuthProvider, AuthContext } from "./context/AuthContext";
+import ManagerSignIn from "./pages/ManagerSignIn";
+import Dashboard from "./pages/Dashboard";
+import "./App.css";
+import Calendar from "./pages/Calendar";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -16,6 +22,8 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/manager-signin" element={<ManagerSignIn />} />
+          <Route path="/dash" element={<Dashboard />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route
             path="/manager-dashboard"
             element={

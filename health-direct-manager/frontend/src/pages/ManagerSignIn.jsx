@@ -1,16 +1,16 @@
-import { useState, useContext } from 'react';
-import { toast } from 'react-toastify';
-import InputField from '../components/InputField';
-import logo from '../assets/logo.png';
-import background from '../assets/background.jpg';
-import '../styles/managerSignIn.css';
-import { AuthContext } from '../context/AuthContext';
-import { managerSignin } from '../utils/api';
+import { useState, useContext } from "react";
+import { toast } from "react-toastify";
+import InputField from "../components/InputField";
+import logo from "../assets/logo.png";
+import background from "../assets/background.jpg";
+import "../styles/ManagerSignIn.css";
+import { AuthContext } from "../context/AuthContext";
+import { managerSignin } from "../utils/api";
 
 function ManagerSignIn() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [emailError, setEmailError] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailError, setEmailError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
   const { login } = useContext(AuthContext);
@@ -21,9 +21,9 @@ function ManagerSignIn() {
     const value = e.target.value;
     setEmail(value);
     if (!emailRegex.test(value)) {
-      setEmailError('Please enter a valid email address');
+      setEmailError("Please enter a valid email address");
     } else {
-      setEmailError('');
+      setEmailError("");
     }
   };
 
@@ -34,30 +34,34 @@ function ManagerSignIn() {
   const handleSignIn = async (e) => {
     e.preventDefault();
     if (emailError || !email || !password) {
-      toast.error('Please provide a valid email and password');
+      toast.error("Please provide a valid email and password");
       return;
     }
 
     try {
-      console.log('ManagerSignIn: Attempting to sign in with email:', email);
+      console.log("ManagerSignIn: Attempting to sign in with email:", email);
       const response = await managerSignin({ email, password });
       const { token, user } = response.data;
-      console.log('ManagerSignIn: API response - Token:', token, 'User:', user);
+      console.log("ManagerSignIn: API response - Token:", token, "User:", user);
 
       login(token, user);
-      console.log('ManagerSignIn: Called login with token:', token);
+      console.log("ManagerSignIn: Called login with token:", token);
 
-      toast.success('Manager login successful!');
-      console.log('ManagerSignIn: Navigating to /manager-dashboard');
+      toast.success("Manager login successful!");
+      console.log("ManagerSignIn: Navigating to /manager-dashboard");
     } catch (err) {
-      console.error('ManagerSignIn: Error during sign-in:', err);
-      const errorMessage = err.response?.data?.message || 'Manager login failed';
+      console.error("ManagerSignIn: Error during sign-in:", err);
+      const errorMessage =
+        err.response?.data?.message || "Manager login failed";
       toast.error(errorMessage); // Display the specific error message to the user
     }
   };
 
   return (
-    <div className="auth-container" style={{ backgroundImage: `url(${background})` }}>
+    <div
+      className="auth-container"
+      style={{ backgroundImage: `url(${background})` }}
+    >
       <div className="auth-box">
         <img src={logo} alt="Health Direct Logo" className="auth-logo" />
         <h2>MANAGER LOGIN</h2>
@@ -70,9 +74,13 @@ function ManagerSignIn() {
               value={email}
               onChange={handleEmailChange}
             />
-            {emailError && <p style={{ color: 'red', fontSize: '12px', marginTop: '5px' }}>{emailError}</p>}
+            {emailError && (
+              <p style={{ color: "red", fontSize: "12px", marginTop: "5px" }}>
+                {emailError}
+              </p>
+            )}
             <InputField
-              type={showPassword ? 'text' : 'password'}
+              type={showPassword ? "text" : "password"}
               placeholder="Enter Password"
               label="Password"
               value={password}
@@ -88,7 +96,9 @@ function ManagerSignIn() {
               Remember Me
             </label>
           </div>
-          <button type="button" className="auth-button" onClick={handleSignIn}>LOGIN</button>
+          <button type="button" className="auth-button" onClick={handleSignIn}>
+            LOGIN
+          </button>
         </form>
       </div>
     </div>

@@ -22,13 +22,21 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/manager-signin" element={<ManagerSignIn />} />
-          <Route path="/dash" element={<Dashboard />} />
-          <Route path="/calendar" element={<Calendar />} />
+          {/* <Route path="/dash" element={<Dashboard />} /> */}
+          {/* <Route path="/calendar" element={<Calendar />} /> */}
           <Route
             path="/manager-dashboard"
             element={
               <ProtectedRoute>
                 <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/calendar"
+            element={
+              <ProtectedRoute>
+                <Calendar />
               </ProtectedRoute>
             }
           />

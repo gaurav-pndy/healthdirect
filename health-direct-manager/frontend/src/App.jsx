@@ -22,8 +22,8 @@ function App() {
       <AuthProvider>
         <Routes>
           <Route path="/manager-signin" element={<ManagerSignIn />} />
-          {/* <Route path="/dash" element={<Dashboard />} /> */}
-          {/* <Route path="/calendar" element={<Calendar />} /> */}
+          <Route path="/dash" element={<Dashboard />} />
+          <Route path="/calendar" element={<Calendar />} />
           <Route
             path="/manager-dashboard"
             element={
@@ -32,14 +32,14 @@ function App() {
               </ProtectedRoute>
             }
           />
-          <Route
+          {/* <Route
             path="/calendar"
             element={
               <ProtectedRoute>
                 <Calendar />
               </ProtectedRoute>
             }
-          />
+          /> */}
           <Route path="/" element={<Navigate to="/manager-signin" />} />
         </Routes>
       </AuthProvider>

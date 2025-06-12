@@ -61,10 +61,15 @@ const Sidebar = () => {
           <span>Messenger</span>
         </div>
 
-        <div className="nav-item">
+        <Link
+          to="/profile"
+          className={`nav-item ${
+            location.pathname === "/profile" ? "active" : ""
+          }`}
+        >
           <FiUser className="nav-icon" />
           <span>Profile</span>
-        </div>
+        </Link>
       </nav>
 
       <div className="sidebar-footer">

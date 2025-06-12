@@ -10,6 +10,7 @@ import ManagerSignIn from "./pages/ManagerSignIn";
 import Dashboard from "./pages/Dashboard";
 import "./App.css";
 import Calendar from "./pages/Calendar";
+import Profile from "./pages/Profile";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -24,6 +25,7 @@ function App() {
           <Route path="/manager-signin" element={<ManagerSignIn />} />
           <Route path="/dash" element={<Dashboard />} />
           <Route path="/calendar" element={<Calendar />} />
+          <Route path="/profile" element={<Profile />} />
           <Route
             path="/manager-dashboard"
             element={

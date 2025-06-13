@@ -1,19 +1,10 @@
  .profile-wrapper {
-  padding: 1rem;
   position: relative;
 }
 
-@media (min-width: 768px) {
-  .profile-wrapper {
-    padding: 1.5rem ;
-  }
-}
- 
  .profile-container {
           margin: 0 auto;
-          padding: 1rem;
-  border-radius: 1.5rem;
-           background-color: #f7f7f7;
+         
           min-height: 100vh;
         }
         

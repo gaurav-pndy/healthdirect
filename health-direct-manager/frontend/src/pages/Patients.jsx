@@ -1,48 +1,196 @@
 import React, { useState } from "react";
-import { Camera, ChevronDown } from "lucide-react";
-import "./Profile.css";
-import { FaCamera } from "react-icons/fa";
-import { IoCamera } from "react-icons/io5";
-import Sidebar from "../components/Sidebar/Sidebar";
-import Header from "../components/Header/Header";
+import {
+  FaMars,
+  FaVenus,
+  FaPhoneAlt,
+  FaEnvelope,
+  FaWhatsapp,
+  FaPaperPlane,
+  FaCaretLeft,
+  FaCaretRight,
+} from "react-icons/fa";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
+import clsx from "clsx";
+import "./Patients.css";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import Header from "@/components/Header/Header";
+import { PiTelegramLogo } from "react-icons/pi";
+
+import { IoMail } from "react-icons/io5";
+
+const patientsData = [
+  {
+    name: "Fionna Wade",
+    gender: "male",
+    service: "Physiotherapy",
+    age: 36,
+    date: "23 May 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "New",
+  },
+  {
+    name: "Amanda Chavez Chavez",
+    gender: "male",
+    service: "Physiotherapy",
+    age: 36,
+    date: "10 June 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "Progress",
+  },
+  {
+    name: "Randy Elliot",
+    gender: "male",
+    service: "Physiotherapy",
+    age: 36,
+    date: "20 May 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "Finished",
+  },
+  {
+    name: "Jasmine Palmer",
+    gender: "female",
+    service: "Physiotherapy",
+    age: 36,
+    date: "13 June 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "New",
+  },
+];
+
+const Tabs = ["Today", "Last Week", "Last Month"];
+const StatusTabs = ["New", "Progress", "Finished"];
 
 const Patients = () => {
-  const [formData, setFormData] = useState({
-    surname: "",
-    name: "",
-    dateOfBirth: "",
-    gender: "",
-    phone: "",
-    phone2: "",
-    email: "",
-    password: "",
-  });
+  const [selectedTab, setSelectedTab] = useState("Today");
+  const [selectedStatusTab, setSelectedStatusTab] = useState("New");
+  const [layout, setLayout] = useState("Expanded");
+  const [activePatient, setActivePatient] = useState(null);
+  const [currentPage, setCurrentPage] = useState(1);
 
-  const [profileImage, setProfileImage] = useState(null);
+  const filterData = () => {
+    let filtered = patientsData;
 
-  const handleInputChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
+    const today = new Date();
 
-  const handleImageUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfileImage(e.target.result);
-      };
-      reader.readAsDataURL(file);
+    if (layout === "Compact") {
+      filtered = filtered.filter((p) => {
+        const date = new Date(p.date);
+        const diffInDays = Math.floor((today - date) / (1000 * 60 * 60 * 24));
+
+        if (selectedTab === "Today") return diffInDays === 0;
+        if (selectedTab === "Last Week") return diffInDays <= 7;
+        if (selectedTab === "Last Month") return diffInDays <= 30;
+
+        return true;
+      });
+    } else {
+      filtered = filtered.filter((p) => p.status === selectedStatusTab);
     }
+
+    // Sort by date descending (latest first)
+    filtered.sort((a, b) => new Date(b.date) - new Date(a.date));
+
+    return filtered;
   };
 
-  const handleSave = () => {
-    console.log("Form data:", formData);
-    console.log("Profile image:", profileImage);
-    // Handle save logic here
+  const itemsPerPage = layout === "Compact" ? 8 : 5;
+
+  const paginatedData = () => {
+    const start = (currentPage - 1) * itemsPerPage;
+    return filterData().slice(start, start + itemsPerPage);
+  };
+
+  const totalPages = Math.ceil(filterData().length / itemsPerPage);
+
+  const renderIcons = () => (
+    <div className="icon-buttons">
+      <button className="icon phone">
+        <FaPhoneAlt />
+      </button>
+      <button className="icon email">
+        <IoMail />
+      </button>
+      <button className="icon whatsapp">
+        <FaWhatsapp />
+      </button>
+      <button className="icon telegram">
+        <PiTelegramLogo />
+      </button>
+    </div>
+  );
+
+  const renderPatientCard = (patient, index) => {
+    const isActive = patient.name === activePatient;
+    const genderIcon =
+      patient.gender === "male" ? (
+        <FaMars className="gender-icon male" />
+      ) : (
+        <FaVenus className="gender-icon female" />
+      );
+
+    const content = (
+      <div
+        key={index}
+        className={clsx("patient-card", isActive ? "active" : "")}
+        onClick={() => setActivePatient(patient.name)}
+      >
+        <div className="card-top">
+          <div className="left-section">
+            <h2 className="patient-name">{patient.name}</h2>
+          </div>
+          <div className="right-section">
+            <button className="btn report">View Report</button>
+            <div className="gender-appt-div">
+              <div className="gender-icon-wrapper">{genderIcon}</div>
+              <div className="appointment-number">
+                Appointment No. <span>{patient.number}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <hr className="divider" />
+
+        <div className="card-bottom">
+          <div className="info-left">
+            <div className="info-row">
+              <div>
+                <small>Requested Service</small>
+                <strong>{patient.service}</strong>
+              </div>
+              <div className="info-row-2">
+                <div>
+                  <small>Age</small>
+                  <div>{patient.age}</div>
+                </div>
+                <div>
+                  <small>Appointment Date</small>
+                  <div>{patient.date}</div>
+                </div>
+                <div>
+                  <small>Time of Request</small>
+                  <div>{patient.time}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="info-right">
+            <button className="btn history">Patient’s History</button>
+            {renderIcons()}
+          </div>
+        </div>
+      </div>
+    );
+
+    return layout === "Compact" ? (
+      <div className="compact-wrapper">{content}</div>
+    ) : (
+      <div className="expanded-wrapper">{content}</div>
+    );
   };
 
   return (
@@ -51,162 +199,103 @@ const Patients = () => {
       <div className="main-content">
         <Header />
         <div className="content-area">
-          <div className="profile-wrapper">
-            <div className="profile-container">
-              {/* Profile Photo Section */}
-              <div className="photo-section">
-                <div className="photo-circle">
-                  {profileImage ? (
-                    <img
-                      src={profileImage}
-                      alt="Profile"
-                      className="profile-image-select"
-                    />
-                  ) : (
-                    <div className="photo-placeholder">
-                      <IoCamera size={36} className="camera-icon" />
-                      <span className="photo-text">Click to change photo</span>
-                    </div>
-                  )}
-                  <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleImageUpload}
-                    className="photo-input"
+          <div className="patients-container">
+            <h1 className="page-title">Patients</h1>
+            <p className="page-subtitle">See all the patients here</p>
+
+            <div className="toolbar">
+              <div className="tab-row">
+                {layout === "Compact"
+                  ? Tabs.map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => {
+                          setSelectedTab(tab);
+                          setCurrentPage(1);
+                        }}
+                        className={clsx(
+                          "tab-button",
+                          selectedTab === tab ? "active-tab" : ""
+                        )}
+                      >
+                        {tab}
+                      </button>
+                    ))
+                  : StatusTabs.map((tab) => (
+                      <button
+                        key={tab}
+                        onClick={() => {
+                          setSelectedStatusTab(tab);
+                          setCurrentPage(1);
+                        }}
+                        className={clsx(
+                          "tab-button",
+                          selectedStatusTab === tab ? "active-tab" : ""
+                        )}
+                      >
+                        {tab}
+                      </button>
+                    ))}
+              </div>
+              <div className="layout-pagination-div">
+                <div className="layout-switch">
+                  <button
+                    onClick={() => setLayout("Compact")}
+                    className={clsx(
+                      "layout-button-1",
+                      layout === "Compact" ? "active-layout" : ""
+                    )}
+                  >
+                    Compact
+                  </button>
+                  <button
+                    onClick={() => setLayout("Expanded")}
+                    className={clsx(
+                      "layout-button-2",
+                      layout === "Expanded" ? "active-layout" : ""
+                    )}
+                  >
+                    Expanded
+                  </button>
+                </div>
+                <div className="pagination">
+                  <FaCaretLeft
+                    className="arrow"
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                  />
+                  <span className="page-input">
+                    Page{" "}
+                    <input
+                      type="number"
+                      className="page-number"
+                      value={currentPage}
+                      onChange={(e) => {
+                        const val = Number(e.target.value);
+                        if (!isNaN(val) && val >= 1 && val <= totalPages) {
+                          setCurrentPage(val);
+                        }
+                      }}
+                    />{" "}
+                    Of {totalPages}
+                  </span>
+                  <FaCaretRight
+                    className="arrow"
+                    onClick={() =>
+                      setCurrentPage((p) => Math.min(totalPages, p + 1))
+                    }
                   />
                 </div>
               </div>
+            </div>
 
-              {/* Form Section */}
-              <div className="form-section">
-                <h2 className="form-title">Patient Details</h2>
-
-                <div className="form-grid">
-                  {/* Row 1 */}
-                  <div className="form-group">
-                    <label className="form-label">
-                      Surname of the service recipient{" "}
-                      <span className="required">*</span>
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      name="surname"
-                      value={formData.surname}
-                      onChange={handleInputChange}
-                      placeholder="Service recipient surname"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">
-                      Name of the service recipient{" "}
-                      <span className="required">*</span>
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      name="name"
-                      value={formData.surname}
-                      onChange={handleInputChange}
-                      placeholder="Service recipient name"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">
-                      Date of birth of the service recipient{" "}
-                      <span className="required">*</span>
-                    </label>
-                    <input
-                      required
-                      type="text"
-                      name="dateOfBirth"
-                      value={formData.dateOfBirth}
-                      onChange={handleInputChange}
-                      placeholder="Your Date of Birth"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Gender</label>
-                    <div className="select-wrapper">
-                      <select
-                        name="gender"
-                        value={formData.gender}
-                        onChange={handleInputChange}
-                        className="form-select"
-                      >
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                        <option value="Other">Other</option>
-                      </select>
-                      <ChevronDown size={20} className="select-icon" />
-                    </div>
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">
-                      Phone number of the service recipient
-                    </label>
-                    <input
-                      type="number"
-                      name="phone"
-                      value={formData.phone}
-                      onChange={handleInputChange}
-                      placeholder="+123 456 789"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group ">
-                    <label className="form-label">Phone (Optional)</label>
-                    <input
-                      type="number"
-                      name="phone2"
-                      value={formData.phone2}
-                      onChange={handleInputChange}
-                      placeholder="+123 456 789"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Email</label>
-                    <input
-                      type="email"
-                      name="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
-                      placeholder="Your Email"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group ">
-                    <label className="form-label">Password</label>
-                    <input
-                      type="password"
-                      name="password"
-                      value={formData.password}
-                      onChange={handleInputChange}
-                      placeholder="xxxx xxxx xxxx"
-                      className="form-input"
-                    />
-                  </div>
-                </div>
-
-                <div className="forgot-password-container">
-                  <span className="forgot-password-text">Forgot Password</span>
-                </div>
-
-                <button onClick={handleSave} className="patients-save-button">
-                  Save Changes
-                </button>
-              </div>
+            <div
+              className={clsx(
+                layout === "Compact" ? "compact-list" : "expanded-grid"
+              )}
+            >
+              {paginatedData().map((patient, i) =>
+                renderPatientCard(patient, i)
+              )}
             </div>
           </div>
         </div>

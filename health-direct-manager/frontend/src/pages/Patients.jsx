@@ -6,16 +6,16 @@ import { IoCamera } from "react-icons/io5";
 import Sidebar from "../components/Sidebar/Sidebar";
 import Header from "../components/Header/Header";
 
-const Profile = () => {
+const Patients = () => {
   const [formData, setFormData] = useState({
+    surname: "",
     name: "",
-    gender: "Male",
     dateOfBirth: "",
-    age: "",
-    residence: "",
-    placeofWork: "",
-    specialty: "",
-    regalia: "",
+    gender: "",
+    phone: "",
+    phone2: "",
+    email: "",
+    password: "",
   });
 
   const [profileImage, setProfileImage] = useState(null);
@@ -79,21 +79,54 @@ const Profile = () => {
 
               {/* Form Section */}
               <div className="form-section">
-                <h2 className="form-title">Manager Profile</h2>
+                <h2 className="form-title">Patient Details</h2>
 
                 <div className="form-grid">
                   {/* Row 1 */}
                   <div className="form-group">
                     <label className="form-label">
-                      Name (Patronymic) <span className="required">*</span>
+                      Surname of the service recipient{" "}
+                      <span className="required">*</span>
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      name="surname"
+                      value={formData.surname}
+                      onChange={handleInputChange}
+                      placeholder="Service recipient surname"
+                      className="form-input"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">
+                      Name of the service recipient{" "}
+                      <span className="required">*</span>
                     </label>
                     <input
                       required
                       type="text"
                       name="name"
-                      value={formData.name}
+                      value={formData.surname}
                       onChange={handleInputChange}
-                      placeholder="Surname"
+                      placeholder="Service recipient name"
+                      className="form-input"
+                    />
+                  </div>
+
+                  <div className="form-group">
+                    <label className="form-label">
+                      Date of birth of the service recipient{" "}
+                      <span className="required">*</span>
+                    </label>
+                    <input
+                      required
+                      type="text"
+                      name="dateOfBirth"
+                      value={formData.dateOfBirth}
+                      onChange={handleInputChange}
+                      placeholder="Your Date of Birth"
                       className="form-input"
                     />
                   </div>
@@ -117,81 +150,60 @@ const Profile = () => {
 
                   <div className="form-group">
                     <label className="form-label">
-                      Date of birth of the service recipient{" "}
-                      <span className="required">*</span>
+                      Phone number of the service recipient
                     </label>
                     <input
-                      required
-                      type="text"
-                      name="dateOfBirth"
-                      value={formData.dateOfBirth}
+                      type="number"
+                      name="phone"
+                      value={formData.phone}
                       onChange={handleInputChange}
-                      placeholder="Your Date of Birth"
+                      placeholder="+123 456 789"
+                      className="form-input"
+                    />
+                  </div>
+
+                  <div className="form-group ">
+                    <label className="form-label">Phone (Optional)</label>
+                    <input
+                      type="number"
+                      name="phone2"
+                      value={formData.phone2}
+                      onChange={handleInputChange}
+                      placeholder="+123 456 789"
                       className="form-input"
                     />
                   </div>
 
                   <div className="form-group">
-                    <label className="form-label">Age</label>
+                    <label className="form-label">Email</label>
                     <input
-                      type="text"
-                      name="age"
-                      value={formData.age}
+                      type="email"
+                      name="email"
+                      value={formData.email}
                       onChange={handleInputChange}
-                      placeholder="Your Age"
+                      placeholder="Your Email"
                       className="form-input"
                     />
                   </div>
 
                   <div className="form-group ">
-                    <label className="form-label">Place of Residence</label>
+                    <label className="form-label">Password</label>
                     <input
-                      type="text"
-                      name="residence"
-                      value={formData.residence}
+                      type="password"
+                      name="password"
+                      value={formData.password}
                       onChange={handleInputChange}
-                      placeholder="Your Address"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group">
-                    <label className="form-label">Main place of work</label>
-                    <input
-                      type="text"
-                      name="placeOfWork"
-                      value={formData.placeOfWork}
-                      onChange={handleInputChange}
-                      placeholder="Your Place of Work"
-                      className="form-input"
-                    />
-                  </div>
-
-                  <div className="form-group ">
-                    <label className="form-label">Specialty</label>
-                    <input
-                      type="text"
-                      name="specialty"
-                      value={formData.specialty}
-                      onChange={handleInputChange}
-                      placeholder="Your Specialty"
-                      className="form-input"
-                    />
-                  </div>
-                  <div className="form-group ">
-                    <label className="form-label">Regalia</label>
-                    <input
-                      type="text"
-                      name="regalia"
-                      value={formData.regalia}
-                      onChange={handleInputChange}
-                      placeholder="Your Regalia"
+                      placeholder="xxxx xxxx xxxx"
                       className="form-input"
                     />
                   </div>
                 </div>
 
-                <button onClick={handleSave} className="save-button">
+                <div className="forgot-password-container">
+                  <span className="forgot-password-text">Forgot Password</span>
+                </div>
+
+                <button onClick={handleSave} className="patients-save-button">
                   Save Changes
                 </button>
               </div>
@@ -203,4 +215,4 @@ const Profile = () => {
   );
 };
 
-export default Profile;
+export default Patients;

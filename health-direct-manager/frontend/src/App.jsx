@@ -11,6 +11,7 @@ import Dashboard from "./pages/Dashboard";
 import "./App.css";
 import Calendar from "./pages/Calendar";
 import Profile from "./pages/Profile";
+import Patients from "./pages/Patients";
 
 function App() {
   const ProtectedRoute = ({ children }) => {
@@ -26,6 +27,7 @@ function App() {
           <Route path="/dash" element={<Dashboard />} />
           <Route path="/calendar" element={<Calendar />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/patients" element={<Patients />} />
           <Route
             path="/manager-dashboard"
             element={

@@ -41,10 +41,15 @@ const Sidebar = () => {
           <span>Calendar</span>
         </Link>
 
-        <div className="nav-item">
+        <Link
+          to="/patients"
+          className={`nav-item ${
+            location.pathname === "/patients" ? "active" : ""
+          }`}
+        >
           <FiUsers className="nav-icon" />
           <span>Patients</span>
-        </div>
+        </Link>
 
         <div className="nav-item">
           <FiUser className="nav-icon" />

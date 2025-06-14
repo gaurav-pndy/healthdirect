@@ -1,0 +1,51 @@
+.report-div{
+    margin-top: 2rem;
+}
+
+.report-item {
+
+  border-radius: 15px;
+  padding: 0.8rem;
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+ background-color: #00285e;
+  color: white;
+}
+
+
+ 
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.service-icon {
+background-color: #66c9cb;
+    color: #195e83;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
+
+
+
+
+.service-title {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.appointment-date {
+  font-size: 1rem;
+ font-weight: 500;
+  white-space: nowrap;
+  color: white;
+}

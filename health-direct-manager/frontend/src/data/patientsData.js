@@ -3,7 +3,7 @@ export const patientsData = [
     id: 1,
     name: "Amanda Chavez Chavez",
     gender: "male",
-    service: "Physiotherapy",
+    service: "Molecular Council",
     age: 36,
     date: "23 May 2025",
     time: "10:00 - 10:30",

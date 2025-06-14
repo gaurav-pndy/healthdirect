@@ -18,6 +18,7 @@ import { PiTelegramLogo } from "react-icons/pi";
 import { patientsData } from "@/data/patientsData";
 import { IoMail } from "react-icons/io5";
 import PatientHistory from "@/components/Patients/PatientHistory";
+import Report from "@/components/Patients/Report";
 
 const Tabs = ["Today", "Last Week", "Last Month"];
 const StatusTabs = ["New", "Progress", "Finished"];
@@ -30,6 +31,7 @@ const Patients = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedPatient, setSelectedPatient] = useState(null);
   const [showHistory, setShowHistory] = useState(false);
+  const [showReport, setShowReport] = useState(false);
 
   const filterData = () => {
     let filtered = patientsData;
@@ -104,7 +106,16 @@ const Patients = () => {
               <h2 className="patient-name">{patient.name}</h2>
             </div>
             <div className="right-section">
-              <button className="btn report">View Report</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // to prevent card click
+                  setSelectedPatient(patient);
+                  setShowReport(true);
+                }}
+                className="btn report"
+              >
+                View Report
+              </button>
               <div className="gender-appt-div">
                 <div className="gender-icon-wrapper">{genderIcon}</div>
                 <div className="appointment-number">
@@ -193,7 +204,16 @@ const Patients = () => {
             Appl. No: <span>{patient.number}</span>
           </div>
 
-          <button className="btn-2 view-report-2">View Report</button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // to prevent card click
+              setSelectedPatient(patient);
+              setShowReport(true);
+            }}
+            className="btn-2 view-report-2"
+          >
+            View Report
+          </button>
           <button
             onClick={(e) => {
               e.stopPropagation(); // to prevent card click
@@ -239,6 +259,11 @@ const Patients = () => {
             <PatientHistory
               patient={selectedPatient}
               onBack={() => setShowHistory(false)}
+            />
+          ) : showReport && selectedPatient ? (
+            <Report
+              patient={selectedPatient}
+              onBack={() => setShowReport(false)}
             />
           ) : (
             <div className="patients-container">

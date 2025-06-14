@@ -1,0 +1,93 @@
+
+
+.highlight {
+  color: #c04ea3;
+}
+
+
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 2rem;
+}
+
+.history-item {
+  background-color: white;
+  border-radius: 12px;
+  padding: 0.6rem;
+  display: flex;
+  color: #c04ea3;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.3s;
+}
+
+.history-item.active {
+  background-color: #00285e;
+  color: white;
+}
+
+.left-section {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.service-icon {
+  background-color: #195e83;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  
+}
+
+.history-item.active .service-icon{
+    background-color: #66c9cb;
+    color: #195e83;
+}
+
+
+
+.service-title {
+  font-weight: 500;
+  font-size: 1.1rem;
+}
+
+.appointment-date {
+  font-size: 1rem;
+ font-weight: 500;
+  white-space: nowrap;
+  color: inherit;
+  color: #00285e;
+}
+
+.history-item.active .appointment-date{
+    color: white;
+}
+
+
+.btn-container{
+display: flex;
+justify-content: end;
+}
+
+.go-back-btn {
+  margin-top: 2rem;
+  padding: 0.6rem 1.6rem;
+  background-color: #195e83;
+  color: white;
+  font-weight: bold;
+  font-size: 1.3rem;
+  border: none;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.go-back-btn:hover{
+    background-color: #0f4562;
+}

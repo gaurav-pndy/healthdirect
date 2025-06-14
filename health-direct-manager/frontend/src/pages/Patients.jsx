@@ -15,106 +15,9 @@ import "./Patients.css";
 import Sidebar from "@/components/Sidebar/Sidebar";
 import Header from "@/components/Header/Header";
 import { PiTelegramLogo } from "react-icons/pi";
-
+import { patientsData } from "@/data/patientsData";
 import { IoMail } from "react-icons/io5";
-
-const patientsData = [
-  {
-    id: 1,
-    name: "Amanda Chavez Chavez",
-    gender: "male",
-    service: "Physiotherapy",
-    age: 36,
-    date: "23 May 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "New",
-  },
-  {
-    id: 2,
-
-    name: "Amanda Chavez Chavez",
-    gender: "male",
-    service: "Physiotherapy",
-    age: 36,
-    date: "10 June 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "Progress",
-  },
-  {
-    id: 3,
-
-    name: "Amanda Chavez Chavez",
-    gender: "male",
-    service: "Physiotherapy",
-    age: 36,
-    date: "20 May 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "Finished",
-  },
-  {
-    id: 4,
-
-    name: "Amanda Chavez Chavez",
-    gender: "female",
-    service: "Physiotherapy",
-    age: 36,
-    date: "13 June 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "New",
-  },
-  {
-    id: 5,
-
-    name: "Amanda Chavez Chavez",
-    gender: "female",
-    service: "Physiotherapy",
-    age: 36,
-    date: "13 June 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "New",
-  },
-  {
-    id: 6,
-
-    name: "Amanda Chavez Chavez",
-    gender: "female",
-    service: "Physiotherapy",
-    age: 36,
-    date: "13 June 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "New",
-  },
-  {
-    id: 7,
-
-    name: "Amanda Chavez Chavez",
-    gender: "female",
-    service: "Physiotherapy",
-    age: 36,
-    date: "13 June 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "New",
-  },
-  {
-    id: 8,
-
-    name: "Amanda Chavez Chavez",
-    gender: "female",
-    service: "Physiotherapy",
-    age: 36,
-    date: "13 June 2025",
-    time: "10:00 - 10:30",
-    number: "1234 6546 897",
-    status: "New",
-  },
-];
+import PatientHistory from "@/components/Patients/PatientHistory";
 
 const Tabs = ["Today", "Last Week", "Last Month"];
 const StatusTabs = ["New", "Progress", "Finished"];
@@ -125,6 +28,8 @@ const Patients = () => {
   const [layout, setLayout] = useState("Expanded");
   const [activePatient, setActivePatient] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [showHistory, setShowHistory] = useState(false);
 
   const filterData = () => {
     let filtered = patientsData;
@@ -235,7 +140,16 @@ const Patients = () => {
               </div>
             </div>
             <div className="info-right">
-              <button className="btn history">Patient’s History</button>
+              <button
+                onClick={(e) => {
+                  e.stopPropagation(); // to prevent card click
+                  setSelectedPatient(patient);
+                  setShowHistory(true);
+                }}
+                className="btn history"
+              >
+                Patient’s History
+              </button>
               {renderIcons()}
             </div>
           </div>
@@ -280,7 +194,16 @@ const Patients = () => {
           </div>
 
           <button className="btn-2 view-report-2">View Report</button>
-          <button className="btn-2 history-2">Patient’s History</button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation(); // to prevent card click
+              setSelectedPatient(patient);
+              setShowHistory(true);
+            }}
+            className="btn-2 history-2"
+          >
+            Patient’s History
+          </button>
 
           <div className="icon-buttons-2">
             <button className="icon-2 phone-2">
@@ -312,105 +235,112 @@ const Patients = () => {
       <div className="main-content">
         <Header />
         <div className="content-area">
-          <div className="patients-container">
-            <h1 className="page-title">Patients</h1>
-            <p className="page-subtitle">See all the patients here</p>
+          {showHistory && selectedPatient ? (
+            <PatientHistory
+              patient={selectedPatient}
+              onBack={() => setShowHistory(false)}
+            />
+          ) : (
+            <div className="patients-container">
+              <h1 className="page-title">Patients</h1>
+              <p className="page-subtitle">See all the patients here</p>
 
-            <div className="toolbar">
-              <div className="tab-row">
-                {layout === "Compact"
-                  ? Tabs.map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => {
-                          setSelectedTab(tab);
-                          setCurrentPage(1);
+              <div className="toolbar">
+                <div className="tab-row">
+                  {layout === "Compact"
+                    ? Tabs.map((tab) => (
+                        <button
+                          key={tab}
+                          onClick={() => {
+                            setSelectedTab(tab);
+                            setCurrentPage(1);
+                          }}
+                          className={clsx(
+                            "tab-button",
+                            selectedTab === tab ? "active-tab" : ""
+                          )}
+                        >
+                          {tab}
+                        </button>
+                      ))
+                    : StatusTabs.map((tab) => (
+                        <button
+                          key={tab}
+                          onClick={() => {
+                            setSelectedStatusTab(tab);
+                            setCurrentPage(1);
+                          }}
+                          className={clsx(
+                            "tab-button",
+                            selectedStatusTab === tab ? "active-tab" : ""
+                          )}
+                        >
+                          {tab}
+                        </button>
+                      ))}
+                </div>
+                <div className="layout-pagination-div">
+                  <div className="layout-switch">
+                    <button
+                      onClick={() => setLayout("Compact")}
+                      className={clsx(
+                        "layout-button-1",
+                        layout === "Compact" ? "active-layout" : ""
+                      )}
+                    >
+                      Compact
+                    </button>
+                    <button
+                      onClick={() => setLayout("Expanded")}
+                      className={clsx(
+                        "layout-button-2",
+                        layout === "Expanded" ? "active-layout" : ""
+                      )}
+                    >
+                      Expanded
+                    </button>
+                  </div>
+                  <div className="pagination">
+                    <FaCaretLeft
+                      className="arrow"
+                      onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    />
+                    <span className="page-input">
+                      Page{" "}
+                      <input
+                        type="number"
+                        className="page-number"
+                        value={currentPage}
+                        onChange={(e) => {
+                          const val = Number(e.target.value);
+                          if (!isNaN(val) && val >= 1 && val <= totalPages) {
+                            setCurrentPage(val);
+                          }
                         }}
-                        className={clsx(
-                          "tab-button",
-                          selectedTab === tab ? "active-tab" : ""
-                        )}
-                      >
-                        {tab}
-                      </button>
-                    ))
-                  : StatusTabs.map((tab) => (
-                      <button
-                        key={tab}
-                        onClick={() => {
-                          setSelectedStatusTab(tab);
-                          setCurrentPage(1);
-                        }}
-                        className={clsx(
-                          "tab-button",
-                          selectedStatusTab === tab ? "active-tab" : ""
-                        )}
-                      >
-                        {tab}
-                      </button>
-                    ))}
+                      />{" "}
+                      Of {totalPages}
+                    </span>
+                    <FaCaretRight
+                      className="arrow"
+                      onClick={() =>
+                        setCurrentPage((p) => Math.min(totalPages, p + 1))
+                      }
+                    />
+                  </div>
+                </div>
               </div>
-              <div className="layout-pagination-div">
-                <div className="layout-switch">
-                  <button
-                    onClick={() => setLayout("Compact")}
-                    className={clsx(
-                      "layout-button-1",
-                      layout === "Compact" ? "active-layout" : ""
-                    )}
-                  >
-                    Compact
-                  </button>
-                  <button
-                    onClick={() => setLayout("Expanded")}
-                    className={clsx(
-                      "layout-button-2",
-                      layout === "Expanded" ? "active-layout" : ""
-                    )}
-                  >
-                    Expanded
-                  </button>
-                </div>
-                <div className="pagination">
-                  <FaCaretLeft
-                    className="arrow"
-                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                  />
-                  <span className="page-input">
-                    Page{" "}
-                    <input
-                      type="number"
-                      className="page-number"
-                      value={currentPage}
-                      onChange={(e) => {
-                        const val = Number(e.target.value);
-                        if (!isNaN(val) && val >= 1 && val <= totalPages) {
-                          setCurrentPage(val);
-                        }
-                      }}
-                    />{" "}
-                    Of {totalPages}
-                  </span>
-                  <FaCaretRight
-                    className="arrow"
-                    onClick={() =>
-                      setCurrentPage((p) => Math.min(totalPages, p + 1))
-                    }
-                  />
-                </div>
+
+              <div
+                className={clsx(
+                  layout === "Compact" ? "compact-list" : "expanded-grid"
+                )}
+              >
+                {paginatedData().map((patient, i) =>
+                  renderPatientCard(patient, i)
+                )}
               </div>
             </div>
-
-            <div
-              className={clsx(
-                layout === "Compact" ? "compact-list" : "expanded-grid"
-              )}
-            >
-              {paginatedData().map((patient, i) =>
-                renderPatientCard(patient, i)
-              )}
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>

@@ -20,7 +20,8 @@ import { IoMail } from "react-icons/io5";
 
 const patientsData = [
   {
-    name: "Fionna Wade",
+    id: 1,
+    name: "Amanda Chavez Chavez",
     gender: "male",
     service: "Physiotherapy",
     age: 36,
@@ -30,6 +31,8 @@ const patientsData = [
     status: "New",
   },
   {
+    id: 2,
+
     name: "Amanda Chavez Chavez",
     gender: "male",
     service: "Physiotherapy",
@@ -40,7 +43,9 @@ const patientsData = [
     status: "Progress",
   },
   {
-    name: "Randy Elliot",
+    id: 3,
+
+    name: "Amanda Chavez Chavez",
     gender: "male",
     service: "Physiotherapy",
     age: 36,
@@ -50,7 +55,57 @@ const patientsData = [
     status: "Finished",
   },
   {
-    name: "Jasmine Palmer",
+    id: 4,
+
+    name: "Amanda Chavez Chavez",
+    gender: "female",
+    service: "Physiotherapy",
+    age: 36,
+    date: "13 June 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "New",
+  },
+  {
+    id: 5,
+
+    name: "Amanda Chavez Chavez",
+    gender: "female",
+    service: "Physiotherapy",
+    age: 36,
+    date: "13 June 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "New",
+  },
+  {
+    id: 6,
+
+    name: "Amanda Chavez Chavez",
+    gender: "female",
+    service: "Physiotherapy",
+    age: 36,
+    date: "13 June 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "New",
+  },
+  {
+    id: 7,
+
+    name: "Amanda Chavez Chavez",
+    gender: "female",
+    service: "Physiotherapy",
+    age: 36,
+    date: "13 June 2025",
+    time: "10:00 - 10:30",
+    number: "1234 6546 897",
+    status: "New",
+  },
+  {
+    id: 8,
+
+    name: "Amanda Chavez Chavez",
     gender: "female",
     service: "Physiotherapy",
     age: 36,
@@ -97,7 +152,7 @@ const Patients = () => {
     return filtered;
   };
 
-  const itemsPerPage = layout === "Compact" ? 8 : 5;
+  const itemsPerPage = layout === "Compact" ? 5 : 8;
 
   const paginatedData = () => {
     const start = (currentPage - 1) * itemsPerPage;
@@ -124,7 +179,7 @@ const Patients = () => {
   );
 
   const renderPatientCard = (patient, index) => {
-    const isActive = patient.name === activePatient;
+    const isActive = patient.id === activePatient;
     const genderIcon =
       patient.gender === "male" ? (
         <FaMars className="gender-icon male" />
@@ -132,59 +187,117 @@ const Patients = () => {
         <FaVenus className="gender-icon female" />
       );
 
-    const content = (
-      <div
-        key={index}
-        className={clsx("patient-card", isActive ? "active" : "")}
-        onClick={() => setActivePatient(patient.name)}
-      >
-        <div className="card-top">
-          <div className="left-section">
-            <h2 className="patient-name">{patient.name}</h2>
-          </div>
-          <div className="right-section">
-            <button className="btn report">View Report</button>
-            <div className="gender-appt-div">
-              <div className="gender-icon-wrapper">{genderIcon}</div>
-              <div className="appointment-number">
-                Appointment No. <span>{patient.number}</span>
+    const content =
+      layout === "Compact" ? (
+        <div
+          key={index}
+          className={clsx("patient-card", isActive ? "active" : "")}
+          onClick={() => setActivePatient(patient.id)}
+        >
+          <div className="card-top">
+            <div className="left-section">
+              <h2 className="patient-name">{patient.name}</h2>
+            </div>
+            <div className="right-section">
+              <button className="btn report">View Report</button>
+              <div className="gender-appt-div">
+                <div className="gender-icon-wrapper">{genderIcon}</div>
+                <div className="appointment-number">
+                  Appointment No. <span>{patient.number}</span>
+                </div>
               </div>
             </div>
           </div>
+
+          <hr className="divider" />
+
+          <div className="card-bottom">
+            <div className="info-left">
+              <div className="info-row">
+                <div>
+                  <small>Requested Service</small>
+                  <strong>{patient.service}</strong>
+                </div>
+                <div className="info-row-2">
+                  <div>
+                    <small>Age</small>
+                    <div>{patient.age}</div>
+                  </div>
+                  <div>
+                    <small>Appointment Date</small>
+                    <div>{patient.date}</div>
+                  </div>
+                  <div>
+                    <small>Time of Request</small>
+                    <div>{patient.time}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div className="info-right">
+              <button className="btn history">Patient’s History</button>
+              {renderIcons()}
+            </div>
+          </div>
         </div>
+      ) : (
+        <div
+          key={index}
+          className={clsx("patient-card-2", isActive ? "active" : "")}
+          onClick={() => setActivePatient(patient.id)}
+        >
+          <div className="header-row-2">
+            <div>
+              <h2 className="patient-name-2">{patient.name}</h2>
+            </div>
+            <div className="gender-icon-wrapper-2">{genderIcon}</div>
+          </div>
 
-        <hr className="divider" />
-
-        <div className="card-bottom">
-          <div className="info-left">
-            <div className="info-row">
+          <div className="info-group-2">
+            <div>
+              <small>Requested Service</small>
+              <strong>{patient.service}</strong>
+            </div>
+            <div>
+              <small>Age</small>
+              <div>{patient.age}</div>
+            </div>
+            <div className="appt-time-div">
               <div>
-                <small>Requested Service</small>
-                <strong>{patient.service}</strong>
+                <small>Appointment Date</small>
+                <div>{patient.date}</div>
               </div>
-              <div className="info-row-2">
-                <div>
-                  <small>Age</small>
-                  <div>{patient.age}</div>
-                </div>
-                <div>
-                  <small>Appointment Date</small>
-                  <div>{patient.date}</div>
-                </div>
-                <div>
-                  <small>Time of Request</small>
-                  <div>{patient.time}</div>
-                </div>
+              <div>
+                <small>Time of Request</small>
+                <div>{patient.time}</div>
               </div>
             </div>
           </div>
-          <div className="info-right">
-            <button className="btn history">Patient’s History</button>
-            {renderIcons()}
+
+          <hr className="divider" />
+          <div className="appt-number-2">
+            Appl. No: <span>{patient.number}</span>
+          </div>
+
+          <button className="btn-2 view-report-2">View Report</button>
+          <button className="btn-2 history-2">Patient’s History</button>
+
+          <div className="icon-buttons-2">
+            <button className="icon-2 phone-2">
+              <FaPhoneAlt />
+            </button>
+            <button className="icon-2 email-2">
+              <IoMail />
+            </button>
+            <button className="icon-2 whatsapp-2">
+              <FaWhatsapp />
+            </button>
+            <button className="icon-2 telegram-2">
+              <PiTelegramLogo />
+            </button>
           </div>
         </div>
-      </div>
-    );
+      );
 
     return layout === "Compact" ? (
       <div className="compact-wrapper">{content}</div>

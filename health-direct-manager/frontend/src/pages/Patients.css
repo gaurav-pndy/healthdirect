@@ -341,6 +341,12 @@ background-color: #3e8b8d;
   align-items: center;
   justify-content: center;
   font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.icon-buttons .icon:hover {
+  transform: scale(110%);
 }
 
 .icon.phone {
@@ -356,6 +362,171 @@ background-color: #3e8b8d;
   color: white;
 }
 .icon.telegram {
+  background-color: #007bb5;
+  color: white;
+}
+
+
+
+
+.patient-card-2 {
+  background: white;
+  border-radius: 1.2rem;
+  padding: 1rem;
+  
+  font-family: 'Inter', sans-serif;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.patient-card-2.active {
+  background: #183c6c;
+  color: white;
+  border-color: #183c6c;
+}
+
+
+.header-row-2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.patient-name-2 {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #c04ea3;
+}
+
+
+
+.info-group-2 {
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  font-size: 1rem;
+}
+
+.info-group-2 small {
+  
+  display: block;
+ font-size: 0.75rem;
+  color: gray;
+  margin-bottom: 2px;
+  font-weight: 500;
+}
+
+.info-group-2 strong,
+.info-group-2 div {
+ 
+  color: #333;
+}
+
+.patient-card-2.active .info-group-2 div,  
+.patient-card-2.active .info-group-2 strong  {
+ 
+  color: #fff;
+}
+
+
+.appt-time-div{
+    display: flex;
+    justify-content: space-between;
+}
+
+.appt-number-2 {
+   font-size: 0.95rem;
+  color: rgb(137, 137, 255);
+}
+.appt-number-2 span {
+  display: inline-block;
+ 
+ 
+
+}
+
+.btn-2 {
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 0.6rem;
+  cursor: pointer;
+  transition: 0.3s ease;
+  width: 100%;
+
+}
+
+.btn-2.view-report-2 {
+  background-color: #2b5c87;
+  color: white;
+  
+  border-radius: 0.7rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-2.view-report-2:hover {
+background-color: #153e62;
+}
+.btn-2.history-2 {
+ background-color: #66c9cb;
+  color: white;
+ 
+  border-radius: 0.7rem;
+  font-size: 1.1rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+
+.btn-2.history-2:hover {
+background-color: #3e8b8d;
+}
+
+
+.icon-buttons-2 {
+  display: flex;
+ justify-content: space-between;
+ padding: 0 0.2rem;
+}
+
+.icon-buttons-2 .icon-2 {
+  background-color: #f3f3f3;
+  padding: 0.3rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.icon-buttons-2 .icon-2:hover {
+  transform: scale(110%);
+}
+
+.icon-2.phone-2 {
+  background-color: #19a400;
+  color: white;
+}
+.icon-2.email-2 {
+  background-color: #c66aa8;
+  color: white;
+}
+.icon-2.whatsapp-2 {
+  background-color: #10cc00;
+  color: white;
+}
+.icon-2.telegram-2 {
   background-color: #007bb5;
   color: white;
 }

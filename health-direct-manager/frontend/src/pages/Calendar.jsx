@@ -5,6 +5,7 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
 import interactionPlugin from "@fullcalendar/interaction";
+import "./Calendar.css";
 
 import { X, Search } from "lucide-react";
 import {
@@ -15,6 +16,7 @@ import {
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import CreateAppointment from "@/components/Calendar/CreateAppointment";
 import ShowAppointment from "@/components/Calendar/ShowAppointment";
+import CalendarHeader from "@/components/Calendar/CalendarHeader";
 
 const Calendar = () => {
   const [events, setEvents] = useState([
@@ -225,6 +227,46 @@ const Calendar = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  const getDotColor = (event) => {
+    switch (event.extendedProps.type) {
+      case "type1":
+        return "bg-orange-500";
+      case "type2":
+        return "bg-teal-400";
+      default:
+        return "bg-gray-300";
+    }
+  };
+
+  useEffect(() => {
+    const today = new Date();
+    const todayISO = today.toISOString().split("T")[0]; // e.g., "2025-06-20"
+
+    const dayCell = document.querySelector(`.fc-day[data-date="${todayISO}"]`);
+
+    // If today's date is visible in the calendar
+    if (dayCell) {
+      const columnIndex = Array.from(
+        dayCell.parentElement?.children || []
+      ).indexOf(dayCell);
+
+      const headerCells = document.querySelectorAll(".fc-col-header-cell");
+
+      headerCells.forEach((cell, idx) => {
+        if (idx === columnIndex) {
+          cell.classList.add("fc-header-today");
+        } else {
+          cell.classList.remove("fc-header-today");
+        }
+      });
+    } else {
+      // Remove highlight if today is not visible
+      document
+        .querySelectorAll(".fc-col-header-cell")
+        .forEach((cell) => cell.classList.remove("fc-header-today"));
+    }
+  }, []);
+
   return (
     <div className="app">
       <Sidebar />
@@ -236,19 +278,74 @@ const Calendar = () => {
               <h2 className="page-title">Schedule Appointments</h2>
               <p className="page-subtitle">See all your appointments</p>
             </div>
+            <CalendarHeader calendarRef={calendarRef} />
+
             <FullCalendar
               ref={calendarRef}
-              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
-              headerToolbar={{
-                start: "prev,next today",
-                center: "title",
-                end: "dayGridMonth,timeGridWeek,timeGridDay",
+              datesSet={() => {
+                const today = new Date();
+                const todayISO = today.toISOString().split("T")[0]; // e.g., "2025-06-20"
+
+                const dayCell = document.querySelector(
+                  `.fc-day[data-date="${todayISO}"]`
+                );
+
+                // If today's date is visible in the calendar
+                if (dayCell) {
+                  const columnIndex = Array.from(
+                    dayCell.parentElement?.children || []
+                  ).indexOf(dayCell);
+
+                  const headerCells = document.querySelectorAll(
+                    ".fc-col-header-cell"
+                  );
+
+                  headerCells.forEach((cell, idx) => {
+                    if (idx === columnIndex) {
+                      cell.classList.add("fc-header-today");
+                    } else {
+                      cell.classList.remove("fc-header-today");
+                    }
+                  });
+                } else {
+                  // Remove highlight if today is not visible
+                  document
+                    .querySelectorAll(".fc-col-header-cell")
+                    .forEach((cell) =>
+                      cell.classList.remove("fc-header-today")
+                    );
+                }
               }}
+              plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
+              headerToolbar={false}
               initialView="dayGridMonth"
+              dayHeaderFormat={{ weekday: "long" }}
               events={events}
+              dayMaxEventRows={false}
+              eventContent={(arg) => (
+                <div
+                  className={`w-2 h-2 rounded-full mx-[2px] ${getDotColor(
+                    arg.event
+                  )}`}
+                />
+              )}
+              dayCellContent={(arg) => {
+                const date = arg.date;
+                const day = date.getDate();
+                const month = date.toLocaleString("default", {
+                  month: "short",
+                });
+
+                // Show "1 May" if it's the first of the month
+                const content = day === 1 ? `${day} ${month}` : `${day}`;
+                return {
+                  html: `<span class="fc-day-number-custom">${content}</span>`,
+                };
+              }}
+              dayCellClassNames="custom-day-cell"
+              height="auto"
               dateClick={handleDateClick}
               eventClick={handleEventClick}
-              height="auto"
             />
 
             <Dialog open={showDetailsModal} onOpenChange={setShowDetailsModal}>

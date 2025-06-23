@@ -1,0 +1,145 @@
+.fc td,
+.fc th,
+.fc .fc-scrollgrid
+ {
+    border: none !important;
+}
+
+.fc th{
+    border-radius: 10px !important;
+}
+
+
+
+.fc .fc-daygrid-day-frame {
+  padding: 0.6rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: self-start;
+  height: 6.5rem;
+  background: #f3f7f9;
+}
+
+.fc .fc-daygrid-day-top {
+  font-size: 1.2rem;
+  color: gray;
+  margin-bottom: 4px;
+}
+
+.fc .fc-day-today {
+  
+  position: relative;
+}
+
+.fc .fc-day-today .fc-daygrid-day-frame {
+  background: #fff !important;
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.1) !important;
+z-index: 10;
+}
+
+
+
+
+
+.fc-col-header-cell {
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: #374151;
+  padding: 1rem 0 !important;
+  border: none !important;
+}
+
+.fc-col-header-cell.fc-header-today {
+  background-color: #414d55;
+  color: #fff;
+  border-radius: 0% !important;
+}
+
+
+.fc .fc-day-today::after {
+  content: "Today";
+  position: absolute;
+  top: 0.6rem;
+  left: 0.6rem;
+  font-size: 1.2rem;
+  color: rgb(100, 100, 100);
+  font-weight: 600;
+  background-color: #fff;
+  z-index: 10;
+  padding: 0 6px;
+}
+
+/* Calendar Header Buttons */
+.fc .fc-toolbar-chunk button {
+  background-color: #f1f5f9;
+  color: #281e3b;
+  padding: 6px 14px;
+  font-size: 0.875rem;
+  border: none;
+  border-radius: 0.5rem;
+  margin-left: 0.25rem;
+  margin-right: 0.25rem;
+  transition: all 0.2s ease;
+}
+
+.fc .fc-toolbar-chunk button:hover {
+  background-color: #e2e8f0;
+}
+
+.fc .fc-toolbar-chunk button.fc-button-active {
+  background-color: #1e293b;
+  color: white;
+}
+
+/* Calendar Title */
+.fc .fc-toolbar-title {
+  font-size: 1.25rem;
+  font-weight: 500;
+  color: #102a0f;
+}
+
+/* Toolbar Layout */
+.fc-toolbar.fc-header-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+.fc-day-today-highlight {
+  position: relative;
+  background-color: #f6f9fc; /* optional subtle highlight */
+  z-index: 1;
+}
+
+.fc-day-today-highlight::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 8%;
+  bottom: 8%;
+  width: 6px;
+  background-color: #b958a5; /* match your brand color */
+  border-radius: 8px;
+}
+
+.fc .fc-daygrid-day-events{
+    display: flex;
+    
+}
+
+.fc .fc-daygrid-event-harness a{
+    background-color: transparent;
+    padding: 2px;
+}
+.fc .fc-daygrid-event-harness a div{
+    background-color: #f17105;
+    cursor: pointer;
+}
+
+.fc .fc-daygrid-event-harness a div:hover{
+    background-color: #bb5604;
+    
+}
+
+

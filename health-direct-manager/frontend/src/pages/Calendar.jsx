@@ -238,35 +238,6 @@ const Calendar = () => {
     }
   };
 
-  useEffect(() => {
-    const today = new Date();
-    const todayISO = today.toISOString().split("T")[0]; // e.g., "2025-06-20"
-
-    const dayCell = document.querySelector(`.fc-day[data-date="${todayISO}"]`);
-
-    // If today's date is visible in the calendar
-    if (dayCell) {
-      const columnIndex = Array.from(
-        dayCell.parentElement?.children || []
-      ).indexOf(dayCell);
-
-      const headerCells = document.querySelectorAll(".fc-col-header-cell");
-
-      headerCells.forEach((cell, idx) => {
-        if (idx === columnIndex) {
-          cell.classList.add("fc-header-today");
-        } else {
-          cell.classList.remove("fc-header-today");
-        }
-      });
-    } else {
-      // Remove highlight if today is not visible
-      document
-        .querySelectorAll(".fc-col-header-cell")
-        .forEach((cell) => cell.classList.remove("fc-header-today"));
-    }
-  }, []);
-
   return (
     <div className="app">
       <Sidebar />
@@ -282,38 +253,63 @@ const Calendar = () => {
 
             <FullCalendar
               ref={calendarRef}
-              datesSet={() => {
-                const today = new Date();
-                const todayISO = today.toISOString().split("T")[0]; // e.g., "2025-06-20"
-
-                const dayCell = document.querySelector(
-                  `.fc-day[data-date="${todayISO}"]`
+              viewDidMount={(arg) => {
+                document.body.classList.toggle(
+                  "fc-month-view",
+                  arg.view.type === "dayGridMonth"
                 );
 
-                // If today's date is visible in the calendar
-                if (dayCell) {
-                  const columnIndex = Array.from(
-                    dayCell.parentElement?.children || []
-                  ).indexOf(dayCell);
+                const calendarApi = calendarRef.current?.getApi();
+                if (!calendarApi) return;
 
-                  const headerCells = document.querySelectorAll(
-                    ".fc-col-header-cell"
-                  );
-
-                  headerCells.forEach((cell, idx) => {
-                    if (idx === columnIndex) {
-                      cell.classList.add("fc-header-today");
-                    } else {
-                      cell.classList.remove("fc-header-today");
-                    }
-                  });
+                if (arg.view.type === "dayGridMonth") {
+                  calendarApi.setOption("dayHeaderFormat", { weekday: "long" });
                 } else {
-                  // Remove highlight if today is not visible
-                  document
-                    .querySelectorAll(".fc-col-header-cell")
-                    .forEach((cell) =>
-                      cell.classList.remove("fc-header-today")
-                    );
+                  calendarApi.setOption("dayHeaderFormat", {
+                    weekday: "long",
+                    month: "short",
+                    day: "numeric",
+                  }); // Reset or use short/empty
+                }
+              }}
+              viewWillUnmount={() => {
+                document.body.classList.remove("fc-month-view");
+              }}
+              datesSet={() => {
+                const todayISO = new Date().toISOString().split("T")[0];
+                const headerCells = document.querySelectorAll(
+                  ".fc-col-header-cell"
+                );
+
+                let highlighted = false;
+
+                headerCells.forEach((cell) => {
+                  const date = cell.getAttribute("data-date");
+                  if (date === todayISO) {
+                    cell.classList.add("fc-header-today");
+                    highlighted = true;
+                  } else {
+                    cell.classList.remove("fc-header-today");
+                  }
+                });
+
+                if (!highlighted) {
+                  const dayCell = document.querySelector(
+                    `.fc-day[data-date="${todayISO}"]`
+                  );
+                  if (dayCell) {
+                    const columnIndex = Array.from(
+                      dayCell.parentElement?.children || []
+                    ).indexOf(dayCell);
+
+                    headerCells.forEach((cell, idx) => {
+                      if (idx === columnIndex) {
+                        cell.classList.add("fc-header-today");
+                      } else {
+                        cell.classList.remove("fc-header-today");
+                      }
+                    });
+                  }
                 }
               }}
               plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
@@ -322,14 +318,30 @@ const Calendar = () => {
               dayHeaderFormat={{ weekday: "long" }}
               events={events}
               dayMaxEventRows={false}
-              eventContent={(arg) => (
-                <div
-                  className={`w-2 h-2 rounded-full mx-[2px] ${getDotColor(
-                    arg.event
-                  )}`}
-                />
-              )}
+              eventContent={(arg) => {
+                const colorDot = (
+                  <div
+                    className={`w-2 h-2 rounded-full mr-2 ${getDotColor(
+                      arg.event
+                    )}`}
+                  />
+                );
+
+                // Month view: only the dot
+                if (arg.view.type === "dayGridMonth") {
+                  return colorDot;
+                }
+
+                // Week or Day view: dot + title
+                return (
+                  <div className="event-name-container">
+                    <span>{arg.event.title}</span>
+                  </div>
+                );
+              }}
               dayCellContent={(arg) => {
+                if (arg.view.type !== "dayGridMonth") return;
+
                 const date = arg.date;
                 const day = date.getDate();
                 const month = date.toLocaleString("default", {
@@ -338,6 +350,7 @@ const Calendar = () => {
 
                 // Show "1 May" if it's the first of the month
                 const content = day === 1 ? `${day} ${month}` : `${day}`;
+
                 return {
                   html: `<span class="fc-day-number-custom">${content}</span>`,
                 };

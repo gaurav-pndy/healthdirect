@@ -65,7 +65,7 @@ const CreateAppointment = ({
 
         {/* Time Picker */}
         <div className="input-group">
-          <label className="label">Select Time</label>
+          <label className="label">Select Start Time</label>
           <input
             type="time"
             value={formData.time}
@@ -73,9 +73,18 @@ const CreateAppointment = ({
             className="text-input"
           />
         </div>
+        <div className="input-group">
+          <label className="label">Select End Time</label>
+          <input
+            type="time"
+            value={formData.endTime}
+            onChange={(e) => handleInputChange("endTime", e.target.value)}
+            className="text-input"
+          />
+        </div>
 
         {/* Patient Details */}
-        <div className="input-group">
+        <div className="input-group-2">
           <input
             type="text"
             placeholder="Patient Name"

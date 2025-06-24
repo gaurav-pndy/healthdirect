@@ -1,4 +1,4 @@
-.fc td,
+body.fc-month-view .fc td,
 .fc th,
 .fc .fc-scrollgrid
  {
@@ -14,9 +14,9 @@
     display: none;
 }
 
-/* .fc-timegrid .fc-timegrid-slot-lane{
-    padding:2rem
-} */
+.fc-timegrid .fc-timegrid-slot-lane{
+    padding: 3px
+}
 
 
 body.fc-month-view .fc .fc-daygrid-day-frame {

@@ -39,7 +39,7 @@ const ShowAppointment = ({ selectedEvent, popoverPosition }) => {
       <div className="show-appointment-info">
         <p className="show-appointment-info-title">Time of Request</p>{" "}
         {new Date(selectedEvent.start).toLocaleTimeString()} -{" "}
-        {new Date(selectedEvent.end).toLocaleTimeString()}
+        {new Date(selectedEvent.extendedProps.endTime).toLocaleTimeString()}
       </div>
       <div className="show-appointment-service-no">
         Service No: {selectedEvent.extendedProps.serviceNo}

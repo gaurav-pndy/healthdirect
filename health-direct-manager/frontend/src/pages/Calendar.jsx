@@ -43,6 +43,7 @@ const Calendar = () => {
     doctor: "",
     date: "",
     time: "12:30",
+    endTime: "",
     patientName: "",
     age: "",
     gender: "",
@@ -100,25 +101,84 @@ const Calendar = () => {
 
   const handleDateClick = (arg) => {
     const rect = arg.dayEl.getBoundingClientRect();
-
-    // Calculate smart position
     const position = calculatePopoverPosition(rect);
     setPopoverPosition(position);
 
-    setSelectedDate(arg.dateStr);
+    const clickedDate = arg.date;
+
+    const formattedDate =
+      clickedDate.getFullYear() +
+      "-" +
+      String(clickedDate.getMonth() + 1).padStart(2, "0") +
+      "-" +
+      String(clickedDate.getDate()).padStart(2, "0");
+
+    const hours = clickedDate.getHours();
+    const minutes = clickedDate.getMinutes();
+    const hasTime = hours !== 0 || minutes !== 0;
+
+    const formattedTime = hasTime
+      ? clickedDate.toLocaleTimeString([], {
+          hour: "2-digit",
+          minute: "2-digit",
+          hour12: false,
+        })
+      : "12:30";
+
+    setSelectedDate(formattedDate);
     setShowAddModal(true);
     setFormData({
       doctor: "",
-      date: arg.dateStr,
-      time: "12:30",
+      date: formattedDate,
+      time: formattedTime,
+      endTime: "",
       patientName: "",
       age: "",
       gender: "",
       service: "",
       serviceNo: "",
     });
+
     setDoctorSearch("");
     setShowDoctorSuggestions(false);
+  };
+
+  const handleAddPatient = () => {
+    const { patientName, doctor, date, time, endTime } = formData;
+
+    if (patientName && doctor && date && time) {
+      const startTime = `${date}T${time}:00`;
+      const computedEndTime = endTime ? `${date}T${endTime}:00` : null;
+
+      // Create Date object from startTime
+      const startDateTime = new Date(startTime);
+
+      // Add 30 minutes
+      const endDateTime = new Date(startDateTime.getTime() + 10 * 60 * 1000);
+
+      // Format back to string: yyyy-mm-ddTHH:mm:ss
+      const endTime2 = endDateTime.toISOString().slice(0, 19);
+      const newEvent = {
+        id: String(events.length + 1),
+        title: patientName,
+        start: startTime,
+        end: endTime2,
+        extendedProps: {
+          age: parseInt(formData.age) || 30,
+          serviceNo: formData.serviceNo || `TEMP${Date.now()}`,
+          service: formData.service || "General Consultation",
+          doctor: formData.doctor,
+          endTime: computedEndTime,
+        },
+      };
+
+      setEvents([...events, newEvent]);
+      closeModal();
+    } else {
+      alert(
+        "Please fill in all required fields: Patient Name, Doctor, Date, and Time"
+      );
+    }
   };
 
   const handleEventClick = (info) => {
@@ -157,42 +217,6 @@ const Calendar = () => {
     });
     setDoctorSearch("");
     setShowDoctorSuggestions(false);
-  };
-
-  const handleAddPatient = () => {
-    if (
-      formData.patientName &&
-      formData.doctor &&
-      formData.date &&
-      formData.time
-    ) {
-      const [hours, minutes] = formData.time.split(":");
-      const startTime = `${formData.date}T${hours}:${minutes}:00`;
-
-      // Calculate end time (30 minutes later)
-      const startDate = new Date(startTime);
-      const endDate = new Date(startDate.getTime() + 30 * 60000);
-      const endTime = endDate.toISOString().slice(0, 19);
-
-      const newEvent = {
-        id: String(events.length + 1),
-        title: formData.patientName,
-        start: startTime,
-        end: endTime,
-        extendedProps: {
-          age: parseInt(formData.age) || 30,
-          serviceNo: formData.serviceNo || `TEMP${Date.now()}`,
-          service: formData.service || "General Consultation",
-          doctor: formData.doctor,
-        },
-      };
-      setEvents([...events, newEvent]);
-      closeModal();
-    } else {
-      alert(
-        "Please fill in all required fields: Patient Name, Doctor, Date, and Time"
-      );
-    }
   };
 
   const handleDoctorSearch = (value) => {
